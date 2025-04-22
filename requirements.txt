@@ -1,0 +1,14 @@
+ultralytics==8.2.87
+Flask==3.0.3
+celery==5.4.0
+redis==5.2.1
+paddlepaddle==2.6.2
+paddleocr==2.8.1
+transformers==4.45.1
+hf_xet==1.0.2
+Pillow==9.4.0
+
+# 源码安装依赖（需手动安装）
+# CLIP - 安装路径：clip/CLIP-main
+# segment-anything - 安装路径：segment-anything/segment-anything-main
+# GroundingDINO - 安装路径：grounding/GroundingDINO-main

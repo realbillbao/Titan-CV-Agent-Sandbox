@@ -1,0 +1,6 @@
+models:
+  yolov8n: models/base/yolov8n.pt
+  yolov8x-pose: models/base/yolov8x-pose.pt
+  yolov8x-worldv2: models/base/yolov8x-worldv2.pt
+  qwen-vl: models/Qwen-VL-Chat
+  qwen2-7b-instruct: models/Qwen2-7B-Instruct
