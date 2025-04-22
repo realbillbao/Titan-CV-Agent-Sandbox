@@ -95,43 +95,43 @@ Titan CV Sandbox is a highly modular and feature-rich computer vision (CV) envir
 
 **Preprocessing:** Provides a variety of image processing functions, such as resizing, cropping, rotating, flipping, affine transformation, and color conversion. Supports batch processing of image path lists to ensure efficient data preprocessing process.
 
-![preprocessing](imgs\preprocessing.jpg)
+![preprocessing](imgs/preprocessing.jpg)
 
 **Postprocessing:** Implements a variety of post-processing operations, including blur processing (Gaussian, mean, median), edge detection (Canny, Sobel, Laplacian), histogram equalization, threshold processing, contour drawing, and morphological operations. Flexible parameter configuration allows users to customize post-processing steps according to specific needs to improve the accuracy and visualization of the results.
 
-![postprocessing](imgs\postprocessing.jpg)
+![postprocessing](imgs/postprocessing.jpg)
 
 **Detection: **Multi-model support: Integrates advanced detection models such as AutoYOLO, YOLO World, and DINO to meet detection needs in different scenarios. Efficient reasoning: Use GPU to accelerate the reasoning process, support half-precision (FP16) calculation, and improve processing speed. Scalability: Through flexible parameter configuration, users can adjust the confidence threshold, IOU threshold, maximum number of detection boxes, etc. as needed.
 
-![detection](imgs\detection.png)
+![detection](imgs/detection.png)
 
 **Segmentation:** Based on the LangSAM model, it implements semantic segmentation and instance segmentation, supports fine segmentation of multiple categories and multiple regions. It provides a color mask overlay function to enhance the visualization of the segmentation results.
 
-![segmentation](imgs\segmentation.png)
+![segmentation](imgs/segmentation.png)
 
 **Classification:** Supports zero-shot classification and YOLO-based classification methods to flexibly respond to different classification requirements. Through post-processing steps, the detection results are converted into classification results, providing category statistics and analysis.
 
-![classification](imgs\classification.png)
+![classification](imgs/classification.png)
 
 **Counting: ** Based on the detection results, automatically count the number of objects of each category in the image, supporting single image and batch image processing. Provide global and average counting results for easy data analysis and report generation.
 
-![counting](imgs\counting.png)
+![counting](imgs/counting.png)
 
 **Tracking:** Enables object tracking in video streams, support multi-target tracking and path recording. Automatically save the tracking result video for subsequent analysis and review.
 
-![tracking](imgs\tracking.jpg)
+![tracking](imgs/tracking.jpg)
 
 **Pose Estimation:** Estimates human body keypoints in real-time video. Provides pose tracking video output, suitable for behavior analysis and motion monitoring.
 
-![pose](imgs\pose.jpg)
+![pose](imgs/pose.jpg)
 
 **Optical Flow:** Performs optical flow analysis to track object motion trajectories in the video. Suitable for motion analysis and dynamic scene understanding.
 
-![opticalflow](imgs\opticalflow.png)
+![opticalflow](imgs/opticalflow.png)
 
 **OCR:** Supports text recognition in images, suitable for document processing and information extraction. Provides region recognition based on detection boxes to enhance the accuracy and positioning capabilities of OCR.
 
-![ocr](imgs\ocr.png)
+![ocr](imgs/ocr.png)
 
 **VLM / LLM:**
 
@@ -139,7 +139,7 @@ VLM: Based on the Qwen-VL model, it realizes multimodal interaction between imag
 
 LLM: Integrates the Qwen-Chat model, provides powerful natural language understanding and generation capabilities, and supports complex conversations and information processing.
 
-![vlm](imgs\vlm.jpg)
+<img src="imgs/vlm.jpg" alt="vlm" style="zoom:67%;" />
 
 **Alarm:**According to the detection results, the alarm mechanism is automatically triggered, and users can be notified via email or SMS. Flexible alarm condition configuration is provided, such as detection area, category, and trigger threshold, to ensure timely response to key events.
 
@@ -502,8 +502,8 @@ The resource needs to be located in a mounted and available path and its sub-pat
 
 | **Parameter name** | **Type** | **required** | **describe**                                                 |
 | ------------------ | -------- | ------------ | ------------------------------------------------------------ |
-| **function_name**  | String   | 是           | The name of the function to be called, such as "vlm"         |
-| **arguments**      | Dict     | 是           | The specific parameters of the function vary according to the function |
+| **function_name**  | String   | Yes          | The name of the function to be called, such as "vlm"         |
+| **arguments**      | Dict     | Yes          | The specific parameters of the function vary according to the function |
 
 **Example**
 
