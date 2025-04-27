@@ -220,14 +220,14 @@ bash base/shell/start_worker.sh
 
 ```bash
 apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0 redis-server zip unzip 
-conda create -p {/datacanvas/env/titan_cv_agent_sandbox} python==3.10.0 -y
-conda activate /datacanvas/env/titan_cv_agent_sandbox
+conda create -p /datacanvas/envs/titan_cv_agent_sandbox python==3.10.0 -y
+conda activate /datacanvas/envs/titan_cv_agent_sandbox
 cd /datacanvas/code/agent_series/opensource/titan_cv_agent_sandbox
 pip install -r requirements.txt -i  https://pypi.tuna.tsinghua.edu.cn/simple
 
 export AGENT_ROOT=/datacanvas/titan_cv_agent_sandbox
 export MODELS_ROOT=/datacanvas/titan_cv_agent_sandbox/models
-export ENV_ROOT=/datacanvas/env/titan_cv_agent_sandbox
+export ENV_ROOT=/datacanvas/envs/titan_cv_agent_sandbox
 export ACCESS_KEY=sk-******
 export BASE_LLM_URL=https://api.openai-proxy.org/v1/chat/completions
 export BASE_VLM_URL=https://api.openai-proxy.org/v1/chat/completions
