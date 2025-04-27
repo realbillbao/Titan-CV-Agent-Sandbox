@@ -347,7 +347,6 @@ BASE_LOGGER_WORKER_PATH = "{AGENT_ROOT}base/logs/worker.log"
 # Save the output file image/video
 BASE_LOCAL_OUTPUT_PREFIX = "{AGENT_ROOT}output/"
 
-# The following parameters do not support getting from environment variables
 # Allocate tasks that only use cpu in Celery
 CPU_TASK = ["preprocess","postprocess","alarm","output","videoprecess"]
 # In Celery, assign tasks that require more GPU usage, and the rest of the tasks default to tasks that use less GPU usage. Celery will allocate different resources based on the type of task.
@@ -407,7 +406,7 @@ echo "All services have been started. Check log files for details."
 
 
 
-### Docker & Kubernetes Installation
+### Kubernetes Installation
 
 **Kubernetes startup script**
 
