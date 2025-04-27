@@ -4,6 +4,16 @@ Titan CV Sandbox is a highly modular and feature-rich computer vision (CV) envir
 
 
 
+## Titan CV Agent Series
+
+[Titan CV Agent Sandbox](https://github.com/DataCanvasAILab/Titan-CV-Agent-Sandbox)
+
+[Titan CV Agent Executor](https://github.com/DataCanvasAILab/Titan-CV-Agent-Executor)
+
+[Titan CV Agent Benchmark](https://github.com/DataCanvasAILab/Titan-CV-Agent-Benchmark)
+
+
+
 ## Technical Features
 
 **High modularity and scalability**: Each module (such as detection, segmentation, classification, etc.) operates independently, and users can flexibly combine and expand according to their needs to meet diverse application scenarios.
@@ -101,7 +111,7 @@ Titan CV Sandbox is a highly modular and feature-rich computer vision (CV) envir
 
 ![postprocessing](imgs/postprocessing.jpg)
 
-**Detection: **Multi-model support: Integrates advanced detection models such as AutoYOLO, YOLO World, and DINO to meet detection needs in different scenarios. Efficient reasoning: Use GPU to accelerate the reasoning process, support half-precision (FP16) calculation, and improve processing speed. Scalability: Through flexible parameter configuration, users can adjust the confidence threshold, IOU threshold, maximum number of detection boxes, etc. as needed.
+**Detection:** Multi-model support: Integrates advanced detection models such as AutoYOLO, YOLO World, and DINO to meet detection needs in different scenarios. Efficient reasoning: Use GPU to accelerate the reasoning process, support half-precision (FP16) calculation, and improve processing speed. Scalability: Through flexible parameter configuration, users can adjust the confidence threshold, IOU threshold, maximum number of detection boxes, etc. as needed.
 
 ![detection](imgs/detection.png)
 
@@ -113,7 +123,7 @@ Titan CV Sandbox is a highly modular and feature-rich computer vision (CV) envir
 
 ![classification](imgs/classification.png)
 
-**Counting: ** Based on the detection results, automatically count the number of objects of each category in the image, supporting single image and batch image processing. Provide global and average counting results for easy data analysis and report generation.
+**Counting:** Based on the detection results, automatically count the number of objects of each category in the image, supporting single image and batch image processing. Provide global and average counting results for easy data analysis and report generation.
 
 ![counting](imgs/counting.png)
 
@@ -141,11 +151,11 @@ LLM: Integrates the Qwen-Chat model, provides powerful natural language understa
 
 <img src="imgs/vlm.jpg" alt="vlm" style="zoom:67%;" />
 
-**Alarm:**According to the detection results, the alarm mechanism is automatically triggered, and users can be notified via email or SMS. Flexible alarm condition configuration is provided, such as detection area, category, and trigger threshold, to ensure timely response to key events.
+**Alarm:** According to the detection results, the alarm mechanism is automatically triggered, and users can be notified via email or SMS. Flexible alarm condition configuration is provided, such as detection area, category, and trigger threshold, to ensure timely response to key events.
 
-**Output:**Supports multiple output methods, including real-time display, text file writing, and compressed package generation to meet the needs of different usage scenarios. Provides structured result output for easy subsequent processing and integration.
+**Output:** Supports multiple output methods, including real-time display, text file writing, and compressed package generation to meet the needs of different usage scenarios. Provides structured result output for easy subsequent processing and integration.
 
-**Video Processing:**Supports frame extraction from video and real-time capture of RTMP streams, suitable for video analysis and real-time monitoring. Provides flexible frame sampling interval and duration configuration to ensure efficient video processing.
+**Video Processing:** Supports frame extraction from video and real-time capture of RTMP streams, suitable for video analysis and real-time monitoring. Provides flexible frame sampling interval and duration configuration to ensure efficient video processing.
 
 
 
@@ -198,6 +208,12 @@ unzip package/GroundingDINO.zip -d package/grounding/ && pip install Pillow==9.4
 bash base/shell/start_worker.sh
 ```
 
+> [!TIP]
+>
+> **The entire contents of the "models" folder can be downloaded from the following link:**
+>
+> [Google Drive](https://drive.google.com/file/d/1MfL20FYRdxgR9LEwUapFaZjfB3U6N6KH/view?usp=drive_link)
+
 
 
 #### Installation Examples
@@ -209,10 +225,10 @@ conda activate /datacanvas/env/titan_cv_agent_sandbox
 cd /datacanvas/code/agent_series/opensource/titan_cv_agent_sandbox
 pip install -r requirements.txt -i  https://pypi.tuna.tsinghua.edu.cn/simple
 
-export AGENT_ROOT=/datacanvas/code/agent_series/opensource/titan_cv_agent_sandbox
-export MODELS_ROOT=/datacanvas/code/agent_series/opensource/titan_cv_agent_sandbox/models
+export AGENT_ROOT=/datacanvas/titan_cv_agent_sandbox
+export MODELS_ROOT=/datacanvas/titan_cv_agent_sandbox/models
 export ENV_ROOT=/datacanvas/env/titan_cv_agent_sandbox
-export ACCESS_KEY=sk-WP30E8XF60R3oExUdZIZBp2gXOa43czMAIslvTbI0aEkmHLm
+export ACCESS_KEY=sk-******
 export BASE_LLM_URL=https://api.openai-proxy.org/v1/chat/completions
 export BASE_VLM_URL=https://api.openai-proxy.org/v1/chat/completions
 export HF_ENDPOINT=https://hf-mirror.com
@@ -622,7 +638,21 @@ step = {
 
 ## Acknowledgments
 
-This project uses or references the following repositories:
+**This project is supported by**
+
+***[Datacanvas - Empowering AI Native Businesses Worldwide](https://www.datacanvas.com/en/AboutUs)***
+
+> TEL: +86 400-805-7188
+>
+> Email: sophia@zetyun.com
+>
+> Beijing Office: 6F&8F, Building C, HEYING Center, 10 Xiaoyingxi Road, Haidian District, Beijing, China
+>
+> Shanghai Office: 10F, Building 1, SHIBEI TBC Center, Lane 1401, Jiangchang Road, Jing'an District, Shanghai, China
+
+
+
+**This project uses or references the following repositories:**
 
 [ultralytics](https://github.com/ultralytics/ultralytics)
 
@@ -640,11 +670,11 @@ This project uses or references the following repositories:
 
 ## License
 
-Titan CV Sandbox uses the following license agreement:
+**Titan CV Sandbox uses the following license agreement:**
 
 **Apache License Version 2.0**
 
-The licenses of the components used in this project are as follows:
+**The licenses of the components used in this project are as follows:**
 
 **ultralytics** [AGPL-3.0 license](https://github.com/ultralytics/ultralytics#)
 
