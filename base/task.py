@@ -1,5 +1,3 @@
-# system package
-print("###1")
 import os
 import re
 import sys
@@ -9,26 +7,17 @@ import random
 import numpy as np
 from typing import List, Dict, Literal
 
-print("###2")
-# image package
 import cv2
 from PIL import Image
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from api import get_models
-print("###3")
 yolo_world_model, langsam_model, groundingdino_model, tracking_model, pose_model, ocr_tool = get_models()
 
-# config and tools
 from ultralytics import YOLO
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, parent_dir)
-
-print("###4")
 from base_config import *
-#from auto_yolo.auto_yolo import AutoYolo
 from atools import *
-print("###5")
 
 def get_response(url:str = None, data:dict = None):
     if url is None or data is None:
@@ -319,13 +308,10 @@ class Detection(TaskBase):
                  detect_classes:list[str] = None,
                  high_resolution:bool = False
                  ):
-        print("###6")
         super().__init__()
 
-        print("###7")
         self.image_path_list = convert_string_to_list(image_path_list)
-        self.query_list = convert_string_to_list(query_list)
-        print("###8")    
+        self.query_list = convert_string_to_list(query_list)   
         self.method = method
         self.kwargs = {}
         args_candidate = {
@@ -337,7 +323,6 @@ class Detection(TaskBase):
             #"classes" : detect_classes, 
             "retina_masks" : high_resolution
             }
-        print("###9")
         for k,v in args_candidate.items():
             if v is not None:
                 self.kwargs[k] = v
@@ -348,25 +333,13 @@ class Detection(TaskBase):
         return result
     
     def run(self):
-        print("###10")
         if return_empty_result([self.image_path_list,self.query_list]):
             return {"image_path_list": [], "predict_img_list": [], "boxes_list": [], "classes_name_dict": [], "predict_speeds_dict": {'preprocess':0.0,'inference':0.0,'postprocess':0.0}}
         
-        # if self.method in ["auto_yolo","ay"]:
-        #     return self.auto_yolo()
-        # el
         if self.method in ["yolo_world","yw"]:
             return self.yolo_world()  
         else:
             return self.dino()
-
-    # def auto_yolo(self):
-    #     result_dict = AutoYolo().distributor(
-    #         image_path_list = self.image_path_list, 
-    #         query_list = self.query_list, 
-    #         device = self.device, 
-    #         **self.kwargs)
-    #     return result_dict
 
     def yolo_world(self):
         yolo_world_model.set_classes(self.query_list)
@@ -375,12 +348,10 @@ class Detection(TaskBase):
         return get_yolo_result(results)
     
     def dino(self):
-        print("###11")
         image_resize = self.kwargs.get("imgsz",None)
         box_threshold = self.kwargs.get("conf",0.3)
         text_threshold = 0.2
         max_det = self.kwargs.get("max_det",None)
-        print("###12")
         preprecess_start_time = time.time()
         phrases_list=[]
         boxes_list=[]
@@ -388,19 +359,13 @@ class Detection(TaskBase):
         
         dino_start_time = time.time()
         
-        print("###13")
         for single_image in self.image_path_list:
-            print("######13.1")
             single_image_boxes_list=[]
             predict_img = get_output_image_uuid_name()
-            print("######13.2")
             image_pil = Image.open(single_image).convert("RGB")
-            print("######13.3")
             if image_resize is not None:
                 image_pil = image_pil.resize(image_resize, Image.Resampling.LANCZOS)
-            print("######13.4")
             for query in self.query_list:
-                print("#########13.4.1")
                 boxes, logits, phrases = langsam_model.predict_dino(
                     image_pil, 
                     query, 
@@ -409,13 +374,10 @@ class Detection(TaskBase):
                     groundingdino = groundingdino_model,
                     device = self.device
                     )
-                print("#########13.4.2")
                 phrases = self.post_process_classes(phrases)
                 phrases_list.append(phrases)
-                print("#########13.4.3")
                 boxes = np.column_stack((boxes.numpy(),logits.numpy(),phrases))
                 single_image_boxes_list = single_image_boxes_list + boxes.tolist()
-                print("#########13.4.5")
                 if max_det is not None:
                     boxes = boxes[:max_det]   
                 if not os.path.exists(predict_img):
@@ -423,18 +385,14 @@ class Detection(TaskBase):
                     _Visualization().plot_bboxes(single_image, boxes, predict_img)
                 else:
                     _Visualization().plot_bboxes(predict_img, boxes, predict_img)
-                print("#########13.4.6")
             boxes_list.append(single_image_boxes_list)
 
-        print("###14")
         postprecess_start_time = time.time()
         predict_classes_set=set()
         for phrases in phrases_list:
             predict_classes_set.update(set(phrases))
-        print("###15")
         class_names = {idx:class_name for idx, class_name in enumerate(sorted(predict_classes_set))}
         postprecess_end_time = time.time()
-        print("###16")
         predict_speeds = {
             'preprocess': dino_start_time-preprecess_start_time,
             'inference': postprecess_start_time-dino_start_time,
@@ -902,7 +860,7 @@ class Ocr(TaskBase):
 
     def paddle_ocr(self, image_path_list:str, boxes:List = None, ocr_threshold=0.1):
         share_bbox = False 
-        if boxes:
+        if boxes is not None and boxes not in [[],[[]],[[[]]]]:
             bboxes_layer_num = self.get_list_layernum(boxes)
             assert bboxes_layer_num==3 or bboxes_layer_num==2, "The 'bbox_region' fed to OCR function should be an list of 2 or 3 dims."
             share_bbox = False if bboxes_layer_num==3 else True
@@ -910,8 +868,14 @@ class Ocr(TaskBase):
             if share_bbox == False and (len(image_path_list) != len(boxes)):
                 # number of images should match the number of bbox sets
                 share_bbox = True
-                boxes = boxes[0]        # all images use the 1st set of bboxes
+                #boxes = boxes[0]        # all images use the 1st set of bboxes
+                if isinstance(boxes[0], list):
+                    boxes = boxes[0]
+                else:
+                    boxes = []  # fallback to empty list to avoid cras
             print(f"bboxes_layer_num = {bboxes_layer_num}, share_bbox = {share_bbox}")
+        else:
+            boxes = None
             
         format_result = {"ocr_result":[]}
         for image_idx, image_path in enumerate(image_path_list):
@@ -921,8 +885,11 @@ class Ocr(TaskBase):
             if boxes is not None:
                 if not share_bbox:
                     # TODO always trigger out of range exception
-                    this_img_boxes = boxes[image_idx]
-                else:                                           # All images share the same bbox
+                    if image_idx < len(boxes):
+                        this_img_boxes = boxes[image_idx]
+                    else:
+                        this_img_boxes = []  
+                else: # All images share the same bbox
                     this_img_boxes = boxes
 
                 for one_box in this_img_boxes:
@@ -1183,33 +1150,6 @@ class Output(TaskBase):
         else:
             return {"output": "以下是agent运行输出的结果: \n"+str(self.result_obj)}
 
-# class AutoyoloTrainer(TaskBase):
-#     def __init__(self, 
-#             image_path_list:Union[str, List[str]] = None,
-#             query_list:list[str] = None,
-#             train_epoch:int = 100,
-#             ):
-#         super().__init__()
-#         self.image_path_list = convert_string_to_list(image_path_list)
-#         self.query_list = convert_string_to_list(query_list)
-#         self.train_epoch = train_epoch
-#         self.auto_yolo = AutoYolo()
-    
-#     def run(self):
-#         return self.call_auto_yolo_train()
-    
-#     def _copy_oss_images(self):
-#         download_url_images(self.image_path_list, gcf(keys=["detection","autoyolo_root"]) + "yolo/images/")
-
-#     def call_auto_yolo_train(self):
-#         self.auto_yolo.clean_workdir()
-#         self._copy_oss_images()
-#         self.auto_yolo.write_data_yaml(query_list = self.query_list)
-#         self.auto_yolo.get_label_result_from_sam(prompt_list = self.query_list)
-#         self.auto_yolo.auto_yolo_train(epochs = self.train_epoch, device = self.device)
-#         new_model_path = self.auto_yolo.register_custom_model(query_list = self.query_list)
-#         return {"model_path":new_model_path}
-
 class VideoPrecess(TaskBase):
     def __init__(self,
             video_path:str = None,
@@ -1221,7 +1161,6 @@ class VideoPrecess(TaskBase):
             ) -> None:
         
         super().__init__()
-
     
         self.video_path = video_path
         self.interval= interval
@@ -1246,7 +1185,7 @@ class VideoPrecess(TaskBase):
         
         frames = []
         fps = cap.get(cv2.CAP_PROP_FPS)
-        frame_interval = int(fps * self.interval)  # Convert interval from ms to frame count
+        frame_interval = int(fps * self.interval)
 
         frame_count = 0
         save_dir = os.path.join(BASE_LOCAL_OUTPUT_PREFIX, frame_prefix, str(uuid.uuid4()))
@@ -1258,13 +1197,11 @@ class VideoPrecess(TaskBase):
             ret, frame = cap.read()
             if not ret:
                 break
-            # Sample every specified interval
             if frame_count % frame_interval == 0:
                 frame_filename = f"{frame_count:08d}.{file_format}"
                 frame_path = os.path.join(save_dir, frame_filename)
                 cv2.imwrite(frame_path, frame)
                 frames.append(frame_path)
-                #print(f"Saved sampled frame at count {frame_count} as {frame_filename}")
             frame_count += 1
         cap.release()
         return frames
@@ -1301,38 +1238,3 @@ class VideoPrecess(TaskBase):
 
         cap.release()
         return image_paths
-
-if __name__=="__main__":
-    user_image_path_list = [ 
-                    "/workspace/baohan/code/agent_series/agent_new/data/images/road.jpg",
-                    "/workspace/baohan/code/agent_series/agent_new/data/images/bus.jpg",
-                    "/workspace/baohan/code/agent_series/agent_new/data/images/apple.jpg",
-                    "/workspace/baohan/code/agent_series/agent_new/data/images/fire.jpeg",
-                    "/workspace/baohan/code/agent_series/agent_new/data/images/capacitor.jpeg",
-                   ]
-    video_path = "/workspace/baohan/code/agent_series/agent_new/data/videos/dance_360p.mp4"        
-    query_list = ["person","car","bus"]
-
-    #print(Detection(image_path_list=user_image_path_list, query_list=query_list, method="yw").run())
-
-    #print(Detection(image_path_list="/workspace/baohan/code/agent_series/agent_new/data/images/road.jpg",query_list=["people","car"]).run())
-    #print(Segmentation(image_path_list="/workspace/baohan/code/agent_series/agent_new/data/images/road.jpg",query_list=["people","car"]).run())
-    #print(Classification(image_path_list="/workspace/baohan/code/agent_series/agent_new/data/images/paperimages/classfi.jpg",query_list=["cat"]).run())
-    #print(Counting(image_path_list="/workspace/baohan/code/agent_series/agent_new/data/images/paperimages/counting.jpg",query_list=["face"]).run())
-    #print(Tracking(video_path="/workspace/baohan/code/agent_series/agent_new/data/videos/traffic_flow.mov",query_list=["car"]).run())
-    #print(Pose(video_path="/workspace/baohan/code/agent_series/agent_new/data/videos/dance_360p.mp4").run())
-    #print(OpticalFlow(video_path="/workspace/baohan/code/agent_series/agent_new/data/videos/dance_360p.mp4").run())
-    #print(Ocr(image_path_list=["/workspace/baohan/code/agent_series/agent_new/data/images/student_answer.png"]).run())
-    
-    
-    
-    #print(VideoPrecess(method="rtmp_capturer",rtmp_url="rtmp://ns8.indexforce.com/home/mystream").run())
-    #print(Pose(video_path=user_image_path_list).run())
-    #print(VideoPrecess(method='rtmp_capturer',rtmp_url="rtmp://ns8.indexforce.com/home/mystream",interval=1, rtmp_duration=60).run())
-    #print(Segmentation(image_path_list=["/workspace/baohan/code/agent_series/agent_new/data/images/9px.png","/workspace/baohan/code/agent_series/agent_new/data/images/9px.png"],query_list=["red","yello","blue"]).run())
-    # print(Ocr(image_path_list=["/workspace/baohan/code/agent_series/agent_new/output/video_frame/a61f4f24-117a-4dca-9832-8df617296d68/00000180.jpg"],
-    # bbox_region=[[['345.17163', '172.30887', '484.1731', '250.17776', '0.4756495', 'bag']]],
-    # ocr_threshold=0.3).run())
-    # print(Tracking(video_path="/workspace/baohan/code/agent_series/agent_new/data/videos/traffic_flow.mov",query_list=["car"]).run())
-    # print(Llm(query=["1","+","3="]).run())
-    print(Vlm(image_path=['/workspace/baohan/code/agent_series/agent_new/data/images/road.jpg'],query=["图片中的人在干什么"]).run())
