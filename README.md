@@ -6,11 +6,11 @@ Titan CV Sandbox is a highly modular and feature-rich computer vision (CV) envir
 
 ## Titan CV Agent Series
 
-[Titan CV Agent Sandbox](https://github.com/DataCanvasAILab/Titan-CV-Agent-Sandbox)
+[Titan CV Agent Sandbox](https://github.com/realbillbao/Titan-CV-Agent-Sandbox)
 
-[Titan CV Agent Executor](https://github.com/DataCanvasAILab/Titan-CV-Agent-Executor)
+[Titan CV Agent Executor](https://github.com/realbillbao/Titan-CV-Agent-Executor)
 
-[Titan CV Agent Benchmark](https://github.com/DataCanvasAILab/Titan-CV-Agent-Benchmark)
+[Titan CV Agent Benchmark](https://github.com/realbillbao/Titan-CV-Agent-Benchmark)
 
 
 
